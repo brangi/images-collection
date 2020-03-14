@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactModalLogin from 'react-modal-login';
+import Auth from '../api/Auth';
 
 class SignInUp extends Component {
 
@@ -13,7 +14,7 @@ class SignInUp extends Component {
       initialTab: null,
       recoverPasswordSuccess: null,
     };
-
+    this.Auth = new Auth();
   }
 
   openModal(initialTab) {
@@ -36,11 +37,31 @@ class SignInUp extends Component {
   onLogin() {
     const user = document.querySelector('#user').value;
     const password = document.querySelector('#password').value;
+    this.Auth.login(user,password)
+      .then((res) => {
+          if(res.status === 200){
+            window.location.replace(`http://localhost:3000/image-collection`)
+          }
+        }
+      )
+      .catch(err =>{
+        alert("Not found error, probably credentials incorrect");
+      })
   }
 
   onRegister() {
     const user = document.querySelector('#user').value;
     const password = document.querySelector('#password').value;
+    this.Auth.register(user,password)
+      .then((res) => {
+          if(res.status === 200){
+            window.location.replace(`http://localhost:3000/image-collection`)
+          }
+        }
+      )
+      .catch(err =>{
+        alert("Forbidden error, this user already exists!");
+      })
   }
 
   render() {

@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import ImageView from './components/ImageView';
+
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 import * as serviceWorker from './serviceWorker';
@@ -12,6 +14,7 @@ ReactDOM.render(
       <Switch>
         <Route exact path="/" component={App} />
         <Route exact path="/image-collection" component={App} />
+        <Route exact path="/image/:id" component={ImageView} />
       </Switch>
     </div>
   </Router>,
