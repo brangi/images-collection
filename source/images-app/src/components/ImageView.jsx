@@ -35,19 +35,10 @@ class ImageView extends React.Component {
       showList: false,
       showImageEdit: false,
       showImageSearch: false,
-      //Edit Search
-      newName: '',
-      searchValuePoster: '',
-      searchValueImage: '',
-      searchResultNo: 0,
-      searchResultImages: [],
-      selectedRadio: 'poster'
-
     };
     this.GetImages = new GetImages();
     this.PostComment = new PostComment();
     this.postNewComment = this.postNewComment.bind(this);
-
     this.ImageEdit = new ImageEdit();
     this.editName = this.editName.bind(this);
     this.updateInputNewName = this.updateInputNewName.bind(this);
@@ -68,11 +59,7 @@ class ImageView extends React.Component {
 
   onCloseModal = () => {
     this.setState({ openImagesModal: false });
-    this.setState({ showList: false });
     this.setState({ showImageEdit: false });
-    this.setState({ showImageSearch: false });
-    this.setState({ searchResultNo: 0 });
-    this.setState({ searchResultImages: [] });
   };
 
   handleEditName = (e) => {
@@ -98,14 +85,6 @@ class ImageView extends React.Component {
     this.setState({ newName: e.target.value });
   }
 
-  updateSearchByImageName(e){
-    this.setState({ searchValueImage: e.target.value });
-  }
-
-  updateSearchByPoster(e){
-    this.setState({ searchValuePoster: e.target.value });
-  }
-
   editName(e) {
     e.preventDefault();
     if (this.state.newName) {
@@ -121,30 +100,18 @@ class ImageView extends React.Component {
     }
   }
 
-  renderModals(){
-    if (this.state.showList) {
-      return(
-        <div>
-        </div>
-      );
-    } else if (this.state.showImageEdit) {
-      return(<div>
-        <br/>
-        <br/>
-        <h2>{`Edit image name: `}</h2>
-        <form name="edit-name" onSubmit={this.editName}>
-          <input type="text" onChange={this.updateInputNewName} /><br/><br/>
-          <input type="submit" value="Done"/>
-        </form>
-      </div>)
-    } else if(this.state.showImageSearch){
-      return(<div>
-      </div>)
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot)  {
-
+  renderEditModal(){
+   if (this.state.showImageEdit) {
+     return <div>
+       <br/>
+       <br/>
+       <h2>{`Edit image name: `}</h2>
+       <form name="edit-name" onSubmit={this.editName}>
+         <input type="text" onChange={this.updateInputNewName}/><br/><br/>
+         <input type="submit" value="Done"/>
+       </form>
+     </div>
+   }
   }
 
   postNewComment(comment) {
@@ -162,12 +129,11 @@ class ImageView extends React.Component {
 
   render() {
     const { openImagesModal } = this.state;
-
     return (
       <div>
         <div style={modalStyle}>
           <Modal open={openImagesModal} onClose={this.onCloseModal}>
-            {this.renderModals()}
+            {this.renderEditModal()}
           </Modal>
         </div>
         <div style={{display: 'flex', justifyContent: 'center'}}>
