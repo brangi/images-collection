@@ -5,18 +5,25 @@ import ImageUploader from 'react-images-upload';
 import {
   Link,
 } from 'react-router-dom'
+import S3 from 'aws-s3';
 
-import * as filestack from 'filestack-js';
 import withAuth from './components/withAuth';
 import PostImage from './api/PostImage';
 import GetImages from './api/GetImages';
 import SearchImage from './api/SearchImage';
 
-const client = filestack.init('AVjyBCnoNQ8ySfmKRDlHwz');
 const modalStyle = {
   fontFamily: "sans-serif",
   textAlign: "center"
 };
+
+const configAws = {
+  bucketName: 'image-coll',
+  region: '',
+  accessKeyId: '',
+  secretAccessKey: '',
+};
+const S3Client = new S3(configAws);
 
 class App extends React.Component {
 
@@ -38,6 +45,9 @@ class App extends React.Component {
     this.SearchImage = new SearchImage();
     this.searchImage = this.searchImage.bind(this);
     this.updateInputSearchImage = this.updateInputSearchImage.bind(this);
+    this.onDrop = this.onDrop.bind(this);
+    this.sortByName = this.sortByName.bind(this);
+    this.sortByDate = this.sortByDate.bind(this);
   }
 
   componentWillMount()  {
@@ -55,6 +65,27 @@ class App extends React.Component {
       window.location.href = '/';
   };
 
+  sortByName = () => {
+    this.GetImages.getCollection('name').then(images=>{
+      if(images.data.length >0) {
+        console.log(images)
+        this.setState({
+          imagesCollection: images.data
+        });
+      }
+    })
+  };
+
+  sortByDate = () => {
+    this.GetImages.getCollection('date').then(images=>{
+      if(images.data.length >0) {
+        this.setState({
+          imagesCollection: images.data
+        });
+      }
+    })
+  };
+
   onCloseModal = () => {
     this.setState({ openImagesModal: false });
     this.setState({ showListResult: false });
@@ -69,16 +100,19 @@ class App extends React.Component {
       uploadedImages: this.state.uploadedImages.concat(picture),
       uploading: 'Uploading...please wait...'
     });
-    client.upload(picture[0])
-      .then(res => {
-        console.log('success: ', res);
-        if(res.status === 'Stored') return res;
-      })
+    console.log(picture[0]);
+    S3Client
+      .uploadFile(picture[0], Date.now().toString())
+      .then(data => {
+        console.log(data);
+        if(data.status === 204) return data;
+        })
       .then((res)=>{
         this.PostImage.post(res);
         this.setState({
           uploading: `Image: ${res.filename} -  Successfully uploaded!`
         });
+        window.location.href = '/';
       })
       .catch(err => {
         console.log(err)
@@ -167,6 +201,8 @@ class App extends React.Component {
         <div>
           <Link to="/" onClick={this.openModalSearch}>Search </Link>
         </div>
+        <button onClick={this.sortByName} style={{float: 'right'}}>Sort by name</button>
+        <button onClick={this.sortByDate} style={{float: 'right'}}>Sort by date</button>
         <ul>
           <div> - Images  - </div>
           {this.state.imagesCollection.map((img) => (

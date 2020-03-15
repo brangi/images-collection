@@ -94,6 +94,7 @@ class ImageView extends React.Component {
         const editForm = document.getElementsByName('edit-name')[0];
         editForm.reset();
         this.setState({image_name : res.data.image_name });
+        this.onCloseModal();
       }).catch(e => {
         alert("Something went wrong");
       });
@@ -137,7 +138,7 @@ class ImageView extends React.Component {
           </Modal>
         </div>
         <div style={{display: 'flex', justifyContent: 'center'}}>
-          <Img src={this.state.image_url && this.state.image_url} />
+          <Img src={this.state.image_url && this.state.image_url} style={{height: '50%', width: '50%', objectFit: 'contain'}} />
         </div>
         <div>
           <div className="container">

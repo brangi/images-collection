@@ -16,7 +16,7 @@ export default class PostImage {
       },
     };
     return axios.post(`${this.domain}/image`,
-      imageInfo, config)
+      {url:imageInfo.location, name: imageInfo.key}, config)
       .then((response) => {
         if(response.status === 200){
         }

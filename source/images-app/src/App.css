@@ -122,3 +122,7 @@ button {
   height: 30px;
   margin-top: -2px;
 }
+
+.button-to-right {
+  float: right
+}

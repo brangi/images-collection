@@ -15,7 +15,7 @@ export default class GetImages {
         password: localStorage.getItem('image-coll-pass')
       },
     };
-    return axios.get(`${this.domain}/image/collection`, config)
+    return axios.get(`${this.domain}/image/collection?sort=${sortBy?sortBy:''}`, config)
       .then((response) => {
         if(response.status === 200){
         }

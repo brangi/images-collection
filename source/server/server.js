@@ -90,9 +90,15 @@ dbAuth.initDB();
   });
 
   app.get('/image/collection', async (req, res) => {
-    const sqlImage = "SELECT images.image_id, images.image_name, images.image_url, " +
+    let sqlImage = "SELECT images.image_id, images.image_name, images.image_url, " +
       "users.username, images.created_at  FROM images  " +
       "INNER JOIN users ON users.user_id = images.poster";
+    if(req.query && req.query.sort ==='name'){
+      sqlImage = `${sqlImage} ORDER BY images.image_name ASC`
+    }
+    if(req.query && req.query.sort ==='date'){
+      sqlImage = `${sqlImage} ORDER BY images.created_at DESC`
+    }
     const images = await client.query(sqlImage);
     res.json(images.rows)
   });
