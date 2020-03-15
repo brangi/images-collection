@@ -40,7 +40,7 @@ class SignInUp extends Component {
     this.Auth.login(user,password)
       .then((res) => {
           if(res.status === 200){
-            window.location.replace(`http://localhost:3000/image-collection`)
+            window.location.href = '/';
           }
         }
       )
@@ -55,7 +55,7 @@ class SignInUp extends Component {
     this.Auth.register(user,password)
       .then((res) => {
           if(res.status === 200){
-            window.location.replace(`http://localhost:3000/image-collection`)
+            window.location.href = '/';
           }
         }
       )
