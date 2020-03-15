@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+// import Modal from "react-responsive-modal";
 import ImageUploader from 'react-images-upload';
 import {
   Link,
@@ -18,11 +19,10 @@ class App extends React.Component {
     this.state = {
       imagesCollection:[],
       uploadedImages: [],
-      uploading: ''
+      uploading: '',
     };
     this.PostImage = new PostImage();
     this.GetImages = new GetImages();
-    this.onDrop = this.onDrop.bind(this);
   }
 
   componentWillMount()  {
