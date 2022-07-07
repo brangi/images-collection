@@ -13,7 +13,7 @@
     "axios": "^0.19.2",
     "bootstrap-css-only": "^4.4.1",
     "filestack-js": "^3.12.4",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-grid-gallery": "^0.5.5",
